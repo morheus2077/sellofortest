@@ -40,7 +40,7 @@ export function CreateProductDialog({ categories }: CategoryProps ) {
   const[openConfirmation, setOpenConfirmation] = useState(false);
   const [state, FormAction, isPending] = useActionState(CreateProductAction, null);
 
-   useEffect(() => {
+  useEffect(() => {
     if (state?.success) {
       setOpen(false)       
       setName("") 
