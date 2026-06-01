@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Role {
+  id    String   @id @default(uuid())
+  name  RoleName @unique
+  users Users[]
+}
+
+model Users {
+  id        String     @id @default(uuid())
+  email     String     @unique
+  name      String
+  password  String
+  status    UserStatus
+  contact   String
+  groceryId String
+  roleId    String
+  createdAt DateTime   @default(now())
+  sales     Sales[]
+  grocery   Grocery    @relation(fields: [groceryId], references: [id])
+  role      Role       @relation(fields: [roleId], references: [id])
+}
+
+model Grocery {
+  id        String        @id @default(uuid())
+  name      String        @unique
+  location  String
+  contact   String
+  status    GroceryStatus @default(ACTIVE)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  products  Product[]
+  sales     Sales[]
+  users     Users[]
+}
+
+model Category {
+  id         String    @id @default(uuid())
+  name       String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  grocery_id String?   @db.Uuid
+  products   Product[]
+}
+
+model Product {
+  id           String      @id @default(uuid())
+  name         String
+  price        Float
+  minimumStock Int
+  inStock      Int
+  groceryId    String
+  categoryId   String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  category     Category    @relation(fields: [categoryId], references: [id])
+  grocery      Grocery     @relation(fields: [groceryId], references: [id])
+  salesItems   SalesItem[]
+}
+
+model Sales {
+  id        String      @id @default(uuid())
+  groceryId String
+  userId    String
+  total     Float
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  exchange  Float
+  paidValue Float
+  grocery   Grocery     @relation(fields: [groceryId], references: [id])
+  user      Users       @relation(fields: [userId], references: [id])
+  items     SalesItem[]
+}
+
+model SalesItem {
+  id        String   @id @default(uuid())
+  saleId    String
+  productId String
+  quantity  Int
+  unitPrice Float
+  subtotal  Float
+  createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id])
+  sale      Sales    @relation(fields: [saleId], references: [id])
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  BLOCKED
+}
+
+enum RoleName {
+  ADMIN
+  STAFF
+  OWNER
+}
+
+enum GroceryStatus {
+  ACTIVE
+  INACTIVE
+}
