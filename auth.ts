@@ -24,12 +24,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: credentials?.password as string
       });
 
+      if (!user || !user.id || !user.email || !user.name || !user.role) {
+        return null;
+      }
+
       return {
-        id: user?.id!,
-        name: user?.name!,
-        email: user?.email!,
-        role: user?.role!,
-        groceryId: user?.groceryId!
+        id: user?.id,
+        name: user?.name,
+        email: user?.email,
+        role: user?.role,
+        groceryId: user?.groceryId
       }
       },
     }),
@@ -46,13 +50,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.userId as string
+        session.user.id = token.userId as string;
+
         session.user.role = token.role as {
           id: string;
           name: string;
-        };
+        } | undefined;
+
         session.user.groceryId = token.groceryId as string;
       }
+
       return session;
     }
   },
