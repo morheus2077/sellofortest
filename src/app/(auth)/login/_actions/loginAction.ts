@@ -49,7 +49,7 @@ export async function loginAction(_prevState: ActionState | null, formData: Form
         return redirect("/");
     }
     
-    switch (session.user.role.name) {
+    switch (session?.user?.role?.name) {
         case "ADMIN":
             return redirect("/admin/dashboard");
         case "STAFF":
