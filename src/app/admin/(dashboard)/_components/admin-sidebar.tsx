@@ -18,6 +18,10 @@ export function AdminSidebar({ name, role }: SidebarProps) {
   const pathname = usePathname()
   const { isOpen, toggle } = useSidebar()
 
+  if(!name || !role){
+    return null;
+  }
+
   return (
     <>
     <SessionProvider>
