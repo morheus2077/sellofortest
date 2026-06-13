@@ -19,12 +19,12 @@ export default async function StaffDashboardLayout({
     redirect("/");
   }
 
-  if(session.user.role.name !== "STAFF"){
+  if(session?.user?.role?.name !== "STAFF"){
     redirect("/");
   }
 
-  const userName = session?.user.name;
-  const userRole = session?.user.role.name;
+  const userName = session?.user?.name;
+  const userRole = session?.user?.role?.name;
 
   // const users = await getUsers();
 

@@ -19,12 +19,12 @@ export default async function OwnerDashboardLayout({
     redirect("/");
   }
 
-  if(session.user.role.name !== "OWNER"){
+  if(session?.user?.role?.name !== "OWNER"){
     redirect("/");
   }
 
-  const userName = session?.user.name;
-  const userRole = session?.user.role.name;
+  const userName = session?.user?.name;
+  const userRole = session?.user?.role?.name;
 
   // const users = await getUsers();
 

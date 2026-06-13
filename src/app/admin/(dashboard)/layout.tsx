@@ -19,12 +19,12 @@ export default async function DashboardLayout({
     redirect("/");
   }
 
-  if(session.user.role.name !== "ADMIN"){
+  if(session?.user?.role?.name !== "ADMIN"){
     redirect("/");
   }
 
-  const userName = session?.user.name;
-  const roleName = session?.user.role.name;
+  const userName = session?.user?.name;
+  const roleName = session?.user?.role?.name;
 
   // const users = await getUsers();
 
